@@ -1,4 +1,3 @@
-
 import  React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -38,12 +37,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 const AnimeList = () => {
   const [animeData, setAnimeData] = useState([]);
+  //les filtres
   const [filters, setFilters] = useState({
     seasonYear: "",
     ageRating: "",
     title: "",
   });
-
+//recuperation des données de l'API kitsu avec axios
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get("https://kitsu.io/api/edge/anime");
@@ -58,7 +58,7 @@ const AnimeList = () => {
     <div className="anime-list">
     <div className="anime-list__filters">
     <input className="cherch"
-        type="search"
+        type="text"
         name="title"
         placeholder="Rechercher"
         value={filters.title}
@@ -111,6 +111,7 @@ const AnimeList = () => {
         ))}
      </tbody>
       </table>
+      <button ><Link to={`/Test`}  className='buttf'>voir les favoris</Link></button>
     </div>
     </div></div>
   
