@@ -1,6 +1,6 @@
+
 # Test technique
 ## Introduction
-bla bla tu expliques le test (à quoi il consiste)
+Mise en place d'une application web qui liste les annimées et nous permet de choisir s'ils nsont nos favoris ou pas 
 ## Choix technique
-les technos utilisés et comment tu as fait
-## Utilisation/ fonctionnement
+React JS, React Table , AXIOS, SCSS
