@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 
 
 const AnimeInf = ({anime, AddToFavorites}) => {
+const [verif, setVerif] = useState(false);
  const [favorites, setFavorites] = useState([]);
 const [animeData, setAnimeData] = useState([]);
 const id = useParams().id
@@ -18,6 +19,7 @@ const [cov, setcov] = useState()
 const [post, setpost] = useState() 
 const [rang, setrang] = useState() 
 
+//récuperation des données envoyé par le composant AnimList en se basant sur l'id et en utilisant Axios
 useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get(`https://kitsu.io/api/edge/anime/${id}`);
@@ -49,34 +51,55 @@ const state= {  favorites: [] };
     console.log(favorites);
   }; */
 
-  const addToFavorites = (post) => {
-    setFavorites([...favorites, post]);
-
-    console.log(favorites[0]);
-  }; 
-  const obj = { ...favorites }
-  console.log(obj);
-  //const map = new Map(arr.map((obj) => [obj.key, obj.value]));
- // console.log(map);
+  //fonction d'ajout de l'animé aux favoris
+  const addrmFavorite = (post,id) => {
+    let itemsString = localStorage.getItem('cle');
+    let cle = itemsString ? JSON.parse(itemsString) : [];
+    let a = JSON.parse(itemsString)
+    localStorage.setItem('cle', JSON.stringify(cle));
+    let exist =  itemsString.includes(id)
+    console.log(exist);
+    console.log(id)
+    //tester si l'animé existe dans les favoris, sinon l'ajouter
+    if(!exist){
+        var array = {
+            post: post,
+            id: id
+        };
+        setTheArray([...theArray, array])
+        a.push(array);
+        localStorage.setItem('cle', JSON.stringify(a)) 
+        console.log(localStorage.getItem('cle'))
+    }
+    //si l'animé existe alors le supprimer
+    else{  
+       let updatedList = itemsString.filter((item) => item.id !== id)
+       console.log(updatedList)
+       localStorage.setItem('cle', JSON.stringify(updatedList));
+    }
+  };
+ 
 return(
    <div>
-    <img src = {cov} className="cov" />
-    <img src = {post}  className="post"/>
-    <div class="form-row">
-
-     <div>
-        <button className='butta' onClick={() => addToFavorites(post)}  state= {{ favorites: obj }} >
- Ajouter aux favoris
-        </button>
-      </div>
+        <img src = {cov} className="cov" />
+        <img src = {post}  className="post"/>
+        <div class="form-row">
+        <div>
+        {verif?
+            <button className='butta' onClick={() =>  addrmFavorite (post,id)} > Ajouter aux favoris </button>
+                :
+            <button className='buttr' onClick={() =>  addrmFavorite (post,id)} > Retirer des favoris </button>
+        } 
+        </div>
+        
+        <button ><Link to={`/Test`}  state= {{ favorites: favorites }} className='buttb'>voir les favoris</Link></button>
     
-    <button ><Link to={`/Test`} className='buttb'>voir les favoris</Link></button>
-    <div className="tit" >{titre}</div>
+        <div className="tit" >{titre}</div>
 
 
-    <div className='ran'> Rangs {rang}</div>
-   <p className="syn">{synop}</p>
-   <button ><Link to={`/`}  className='buttc' >Retourner au Catalogue </Link></button>
+        <div className='ran'> Rangs {rang}</div>
+        <p className="syn">{synop}</p>
+        <button ><Link to={`/`}  className='buttc' >Retourner au Catalogue </Link></button>
  
    </div>
    </div>
